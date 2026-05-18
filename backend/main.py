@@ -6,7 +6,7 @@ from google.genai import types
 from dotenv import load_dotenv
 from scraper import scrape_product
 import os
-"C:/Users/ASUS/AppData/Local/Programs/Python/Python310/python.exe -m uvicorn main:app --reload"
+
 load_dotenv()
 
 app = FastAPI(title="SatışAI Backend")
@@ -18,16 +18,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Gemini yapılandırması
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "YOUR_GEMINI_API_KEY_HERE")
 client = genai.Client(api_key=GEMINI_API_KEY)
 
-# --- Modeller ---
+
 class ProductDescRequest(BaseModel):
     product_name: str
     category: str
     features: str
-    tone: str = "profesyonel"  # profesyonel, samimi, premium, genç
+    tone: str = "profesyonel"  
 
 class FAQRequest(BaseModel):
     product_name: str
@@ -44,24 +43,22 @@ class CompareRequest(BaseModel):
     product_b: str
     features_b: str
 
-# --- Yardımcı fonksiyon ---
 def ask_gemini(prompt: str) -> str:
     try:
-        # Yeni google-genai SDK'sının standart çağrısı
+       
         response = client.models.generate_content(
             model="gemini-2.0-flash",
             contents=prompt,
         )
         return response.text
     except Exception as e:
-        # Hatanın ne olduğunu Uvicorn loglarında net görmek için print ekliyoruz
+       
         print(f"\n[!!!] GEMINI API DETAYLI HATA: {str(e)}\n")
-        # Frontend'e hatayı fırlatıyoruz
+   
         raise HTTPException(
             status_code=500, 
             detail= f"Gemini entegrasyon hatası. Detay: {str(e)}"
         )
-# --- Endpoint'ler ---
 
 @app.get("/")
 def root():
@@ -117,18 +114,18 @@ Yorumlar:
 
 Görev: Bu yorumları analiz et ve şu formatta çıktı ver:
 
-⭐ GENEL PUAN: (1-10 arası, yorumlara göre tahmini)
+GENEL PUAN: (1-10 arası, yorumlara göre tahmini)
 
-💚 GÜÇLÜ YÖNLER:
+GÜÇLÜ YÖNLER:
 - (en çok övülen 3-4 nokta)
 
-🔴 ZAYIF YÖNLER:
+ZAYIF YÖNLER:
 - (en çok şikayet edilen 2-3 nokta)
 
-💡 SATIŞ ÖNERİLERİ:
+SATIŞ ÖNERİLERİ:
 - (satıcıya 2-3 somut öneri)
 
-📢 ÖNE ÇIKARILACAK ÖZELLİK:
+ÖNE ÇIKARILACAK ÖZELLİK:
 (Reklamda/açıklamada vurgulanması gereken 1 ana özellik)
 """
     result = ask_gemini(prompt)
@@ -147,21 +144,21 @@ Sen bir e-ticaret stratejisti ve ürün konumlandırma uzmanısın. Türkçe yaz
 
 Görev: Bu iki ürünü karşılaştır ve şu formatta çıktı ver:
 
-📊 KARŞILAŞTIRMA TABLOSU:
+KARŞILAŞTIRMA TABLOSU:
 (Önemli kriterleri yan yana karşılaştır)
 
-🏆 KAZANAN: (Hangi ürün daha iyi konumlanmış ve neden)
+KAZANAN: (Hangi ürün daha iyi konumlanmış ve neden)
 
-🎯 A İÇİN STRATEJİ:
+A İÇİN STRATEJİ:
 (Ürün A'nın B karşısında nasıl öne çıkabileceği, 2-3 öneri)
 
-💰 FİYATLANDIRMA ÖNERİSİ:
+FİYATLANDIRMA ÖNERİSİ:
 (Hangi fiyat aralığında konumlanmalı)
 """
     result = ask_gemini(prompt)
     return {"result": result}
 
-# ── URL tabanlı modeller ──────────────────────────────────────────────────────
+
 
 class UrlRequest(BaseModel):
     url: str
@@ -175,7 +172,6 @@ class CompareUrlRequest(BaseModel):
     url_a: str
     url_b: str
 
-# ── URL tabanlı endpoint'ler ──────────────────────────────────────────────────
 
 @app.post("/api/url/scrape")
 async def scrape_url(req: UrlRequest):
@@ -250,14 +246,14 @@ Mevcut Puan: {data.get('rating', 'bilinmiyor')}
 Yorumlar:
 {reviews_text}
 Görev: Bu yorumları analiz et ve şu formatta çıktı ver:
-⭐ GENEL PUAN: (1-10 arası)
-💚 GÜÇLÜ YÖNLER:
+ GENEL PUAN: (1-10 arası)
+ GÜÇLÜ YÖNLER:
 - (en çok övülen 3-4 nokta)
-🔴 ZAYIF YÖNLER:
+ ZAYIF YÖNLER:
 - (en çok şikayet edilen 2-3 nokta)
-💡 SATIŞ ÖNERİLERİ:
+ SATIŞ ÖNERİLERİ:
 - (satıcıya 2-3 somut öneri)
-📢 ÖNE ÇIKARILACAK ÖZELLİK:
+ ÖNE ÇIKARILACAK ÖZELLİK:
 (Reklamda vurgulanması gereken 1 ana özellik)
 """
     result = ask_gemini(prompt)
@@ -286,10 +282,10 @@ Sen bir e-ticaret stratejisti ve ürün konumlandırma uzmanısın. Türkçe yaz
 - Puan: {data_b.get('rating', '')}
 - Özellikler: {data_b.get('features', '')[:300]}
 Görev: Bu iki ürünü karşılaştır:
-📊 KARŞILAŞTIRMA TABLOSU: (fiyat, puan, özellikler)
-🏆 KAZANAN: (hangisi daha iyi ve neden)
-🎯 A İÇİN STRATEJİ: (2-3 somut öneri)
-💰 FİYATLANDIRMA ÖNERİSİ: (A için ideal fiyat aralığı)
+ KARŞILAŞTIRMA TABLOSU: (fiyat, puan, özellikler)
+ KAZANAN: (hangisi daha iyi ve neden)
+ A İÇİN STRATEJİ: (2-3 somut öneri)
+ FİYATLANDIRMA ÖNERİSİ: (A için ideal fiyat aralığı)
 """
     result = ask_gemini(prompt)
     return {"product_a": data_a, "product_b": data_b, "result": result}
