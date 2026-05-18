@@ -1,7 +1,7 @@
 import asyncio
 from bs4 import BeautifulSoup
 from concurrent.futures import ThreadPoolExecutor
-from curl_cffi import requests  # Httpx yerine bot korumasını aşan kütüphane
+from curl_cffi import requests  
 
 def detect_platform(url: str) -> str:
     if "trendyol.com" in url:
@@ -14,8 +14,6 @@ def detect_platform(url: str) -> str:
 
 def fetch_html(url: str) -> BeautifulSoup:
     try:
-        # impersonate="chrome120" parametresi sitelere "Ben gerçek bir Chrome tarayıcısıyım" der.
-        # timeout=30 ile sitenin yüklenmesi için yeterli süreyi tanıyoruz.
         resp = requests.get(
             url, 
             impersonate="chrome120", 
@@ -47,7 +45,6 @@ def safe_all_texts(soup, selectors, limit=20):
             return texts[:limit]
     return []
 
-# ── TRENDYOL ─────────────────────────────────────────────────────────────────
 def scrape_trendyol_sync(url: str) -> dict:
     result = {"platform": "Trendyol", "url": url}
     soup = fetch_html(url)
@@ -84,7 +81,6 @@ def scrape_trendyol_sync(url: str) -> dict:
 
     return result
 
-# ── HEPSİBURADA ──────────────────────────────────────────────────────────────
 def scrape_hepsiburada_sync(url: str) -> dict:
     result = {"platform": "Hepsiburada", "url": url}
     soup = fetch_html(url)
@@ -121,7 +117,6 @@ def scrape_hepsiburada_sync(url: str) -> dict:
 
     return result
 
-# ── AMAZON TR ────────────────────────────────────────────────────────────────
 def scrape_amazon_sync(url: str) -> dict:
     result = {"platform": "Amazon TR", "url": url}
     soup = fetch_html(url)
@@ -151,7 +146,6 @@ def scrape_amazon_sync(url: str) -> dict:
 
     return result
 
-# ── Ana fonksiyon ─────────────────────────────────────────────────────────────
 def scrape_product_sync(url: str) -> dict:
     platform = detect_platform(url)
     if platform == "trendyol":
