@@ -1,10 +1,10 @@
-# 🚀 SatışAI — E-Ticaret & KOBİ Yapay Zeka Asistanı
+#  SatışAI — E-Ticaret & KOBİ Yapay Zeka Asistanı
 
 > BTK Hackathon 2026 | BTK Akademi × Google × GİRVAK
 
 Küçük işletmeler ve e-ticaret satıcıları için Gemini AI destekli araç seti.
 
-## ✨ Özellikler
+##  Özellikler
 
 | Araç | Ne Yapar |
 |---|---|
@@ -13,15 +13,15 @@ Küçük işletmeler ve e-ticaret satıcıları için Gemini AI destekli araç s
 | **Yorum Analizi** | Güçlü/zayıf yönleri ve satış önerilerini çıkarır |
 | **Ürün Karşılaştırma** | Rakip analizii ve konumlandırma stratejisi önerir |
 
-## 🏗️ Teknolojiler
+##  Teknolojiler
 
 - **Frontend**: React + Vite
 - **Backend**: Python FastAPI
-- **AI**: Google Gemini 1.5 Flash API
+- **AI**: Google Gemini 2.0 Flash API
 
 ---
 
-## 🚀 Kurulum
+##  Kurulum
 
 ### 1. Gemini API Key Al
 [https://aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey) adresinden ücretsiz API key al.
@@ -32,7 +32,6 @@ Küçük işletmeler ve e-ticaret satıcıları için Gemini AI destekli araç s
 cd backend
 
 # .env dosyası oluştur
-cp .env.example .env
 # .env içine GEMINI_API_KEY=your_key_here yaz
 
 # Bağımlılıkları yükle
@@ -60,7 +59,7 @@ Frontend çalışınca: http://localhost:3000
 
 ---
 
-## 📁 Proje Yapısı
+##  Proje Yapısı
 
 ```
 satisai/
@@ -83,9 +82,3 @@ satisai/
     ├── package.json
     └── vite.config.js
 ```
-
-## 💰 Gelir Modeli
-
-- **B2B SaaS**: Trendyol/Hepsiburada satıcılarına aylık abonelik
-- **Hedef**: 500.000+ aktif Trendyol satıcısı
-- **Fiyat**: 199₺/ay (temel) · 499₺/ay (pro)
